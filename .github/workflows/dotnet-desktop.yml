@@ -1,40 +1,34 @@
-name: Deploy ASP.NET Core 5 Web App to Ubuntu VPS
+name: Deploy ASP.NET Core 5 to VPS
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout source code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install .NET SDK
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: 5.0.102
+        dotnet-install-dir: ~/.dotnet
+
+    - name: Build application
+      run: dotnet build --configuration Release
 
     - name: Publish application
-      run: dotnet publish -c Release -o publish
+      run: dotnet publish --configuration Release --output ./publish
 
-    - name: Copy application files to VPS
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USERNAME }}
-        key: ${{ secrets.VPS_PRIVATE_KEY }}
-        source: ./publish/
-        target: /var/www/MyAPP
+    - name: Install SSH and rsync
+      run: sudo apt-get update && sudo apt-get install -y openssh-client rsync
 
-    - name: SSH into VPS and start the application
-      uses: appleboy/ssh-action@master
+    - name: Deploy to VPS
+      uses: easingthemes/ssh-deploy@v2.1.7
       with:
-        host: ${{ '45.76.138.136' }}
-        username: ${{ 'root' }}
-        password: ${{ 'G(7xf8G$ADSX{X=b' }}
-        script: |
-          cd /var/www/myapp
-          dotnet TestAPPLICATION.dll
+        ssh-private-key: ${{ secrets.ServerAccess }}
+        args: -rltgoDzvO --delete ./publish/ user@vps-server:/var/www/MyAPP
