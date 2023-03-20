@@ -14,6 +14,40 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '5.0.x'
+        name: ASP.NET Core Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+    - name: Install .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build the application
+      run: dotnet build --configuration Release
+    - name: Publish the application
+      run: dotnet publish --configuration Release --output publish
+    - name: Deploy the application
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: ${{ '45.76.138.136' }}
+        username: ${{ 'root' }}
+        password: ${{ 'G(7xf8G$ADSX{X=b' }}
+        script: |
+          cd /var/www/MyAPP
+          rm -rf *
+          cp -r /github/workspace/publish/* .
+          systemctl restart TestApplication.service
+
     - name: Build the application
       run: dotnet build --configuration Release
     - name: Publish the application
