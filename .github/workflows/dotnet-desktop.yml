@@ -1,4 +1,4 @@
-name: Deploy ASP.NET Core 5 to VPS
+name: ASP.NET Core Deployment
 
 on:
   push:
@@ -8,27 +8,37 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.102
-        dotnet-install-dir: ~/.dotnet
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+          sudo apt-get install -y curl
+          sudo apt-get install -y libssl-dev
+          sudo apt-get install -y libffi-dev
+          sudo apt-get install -y python-dev
+          sudo apt-get install -y python3-dev
+          sudo apt-get install -y python3-pip
+          sudo pip3 install virtualenv
+          sudo apt-get install -y libpq-dev
 
-    - name: Build application
-      run: dotnet build TestApplication.csproj --configuration Release
+      - name: Build application
+        run: |
+          cd myapp
+          dotnet build
 
-    - name: Publish application
-      run: dotnet publish build TestApplication.csproj --configuration Release --output ./publish
-
-    - name: Install SSH and rsync
-      run: sudo apt-get update && sudo apt-get install -y openssh-client rsync
-
-    - name: Deploy to VPS
-      uses: easingthemes/ssh-deploy@v2.1.7
-      with:
-        ssh-private-key: ${{ secrets.ServerAccess }}
-        args: -rltgoDzvO --delete ./publish/ user@vps-server:/var/www/MyAPP
+      - name: Deploy application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ "45.76.138.136" }}
+          username: ${{ "root" }}
+          password: ${{ "G(7xf8G$ADSX{X=b" }}
+          script: |
+            cd /var/www/myapp
+            sudo rm -rf *
+            scp -r ../myapp/bin/Debug/net5.0/* .
+            sudo systemctl restart myapp.service
