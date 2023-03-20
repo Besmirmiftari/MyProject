@@ -17,16 +17,16 @@ jobs:
         dotnet-version: 5.0.x
         
     - name: DotNet Restore
-      run: dotnet restore
+      run: dotnet restore TestApplication.csproj
     
     - name: DotNet Build
       run: dotnet build --no-restore
       
     - name: DotNet Run Tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test TestApplication.csproj --no-build --verbosity normal
       
     - name: DotNet Publish
-      run: dotnet publish -c Release
+      run: dotnet publish TestApplication.csproj -c Release
       
     - name: Stop ServiceName Service
       uses: garygrossgarten/github-action-ssh@v0.6.3
