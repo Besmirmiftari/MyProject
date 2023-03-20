@@ -23,9 +23,9 @@ jobs:
     - name: Deploy the application
       uses: appleboy/ssh-action@v0.1.8
       with:
-        host: ${{ 45.76.138.136 }}
-        username: ${{ root }}
-        password: ${{ G(7xf8G$ADSX{X=b }}
+        host: ${{ '45.76.138.136' }}
+        username: ${{ 'root' }}
+        password: ${{ 'G(7xf8G$ADSX{X=b' }}
         script: |
           cd /var/www/MyAPP
           rm -rf *
