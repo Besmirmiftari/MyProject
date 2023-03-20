@@ -1,31 +1,40 @@
-name: Deploy to VPS
+name: Deploy ASP.NET Core 5 Web App to Ubuntu VPS
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout source code
+      uses: actions/checkout@v2
 
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.x
+    - name: Install .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
 
-      - name: Build and publish
-        run: dotnet publish -c Release -o publish
+    - name: Publish application
+      run: dotnet publish -c Release -o publish
 
-      - name: Copy files to VPS
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ '45.76.138.136' }}
-          username: ${{ 'root' }}
-          password: ${{ 'G(7xf8G$ADSX{X=b' }}
-          port: 22
-          source: ./publish/
-          target: /var/www/MyAPP
+    - name: Copy application files to VPS
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_PRIVATE_KEY }}
+        source: ./publish/
+        target: /var/www/MyAPP
+
+    - name: SSH into VPS and start the application
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ '45.76.138.136' }}
+        username: ${{ 'root' }}
+        password: ${{ 'G(7xf8G$ADSX{X=b' }}
+        script: |
+          cd /var/www/myapp
+          dotnet TestAPPLICATION.dll
