@@ -86,3 +86,8 @@ C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\obj\Debug\net5
 C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\obj\Debug\net5.0\TestApplication.genruntimeconfig.cache
 C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\obj\Debug\net5.0\ref\TestApplication.dll
 C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\obj\Debug\net5.0\TestApplication.csproj.CopyComplete
+C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\bin\Debug\net5.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\bin\Debug\net5.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\obj\Debug\net5.0\Razor\Pages\MyPage.cshtml.g.cs
+C:\Users\Besmir\Desktop\MyProject\TestApplication\TestApplication\obj\Debug\net5.0\Razor\Views\TestPage.cshtml.g.cs
