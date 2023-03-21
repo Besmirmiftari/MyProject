@@ -18,7 +18,7 @@ jobs:
         dotnet-version: '5.0.x'
 
     - name: Build the project
-      run: dotnet build --configuration Release --project ./MyApp/MyApp.csproj
+      run: dotnet build --configuration Release --project ./TestApplication/TestApplication.csproj
       working-directory: ./MyApp/
 
     - name: Publish the project
