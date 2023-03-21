@@ -18,11 +18,11 @@ jobs:
         dotnet-version: '5.0.x'
 
     - name: Build the project
-      run: dotnet build --configuration Release --file ./TestApplication/TestApplication.csproj
+      run: dotnet build --configuration Release -p:Project=./TestApplication/TestApplication.csproj
       working-directory: ./TestApplication/
 
     - name: Publish the project
-      run: dotnet publish -c Release -o ./publish --no-restore --file ./TestApplication/TestApplication.csproj
+      run: dotnet publish -c Release -o ./publish --no-restore -p:Project=./TestApplication/TestApplication.csproj
       working-directory: ./TestApplication/
 
     - name: Copy files to VPS server
