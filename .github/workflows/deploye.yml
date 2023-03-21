@@ -33,7 +33,7 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         port: 22
         source: publish/
-        target: /var/www/MyAPP/
+        target: var/www/MyAPP/
 
     - name: Restart Nginx
       uses: appleboy/ssh-action@master
