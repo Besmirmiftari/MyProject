@@ -18,10 +18,12 @@ jobs:
         dotnet-version: '5.0.x'
 
     - name: Build the project
-      run: dotnet build --configuration Release --project ./MyApp/TestApplication/TestApplication.csproj
+      run: dotnet build --configuration Release --file ./TestApplication/TestApplication.csproj
+      working-directory: ./TestApplication/
 
     - name: Publish the project
-      run: dotnet publish -c Release -o ./publish --no-restore --project ./MyApp/TestApplication/TestApplication.csproj
+      run: dotnet publish -c Release -o ./publish --no-restore --file ./TestApplication/TestApplication.csproj
+      working-directory: ./TestApplication/
 
     - name: Copy files to VPS server
       uses: appleboy/scp-action@master
